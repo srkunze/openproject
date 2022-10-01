@@ -55,6 +55,9 @@ class ::Type < ApplicationRecord
   belongs_to :color,
              class_name: 'Color'
 
+  belongs_to :initial_status,
+             class_name: 'Status'
+
   acts_as_list
 
   validates :name,

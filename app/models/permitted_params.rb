@@ -587,6 +587,7 @@ class PermittedParams
         ),
         type: [
           :name,
+          :initial_status_id,
           :is_in_roadmap,
           :is_milestone,
           :is_default,

@@ -150,6 +150,7 @@ class TypesController < ApplicationController
   def render_edit_tab(type)
     @tab = params[:tab]
     @projects = Project.all
+    @statuses = Status.all
     @type = type
 
     render action: 'edit'

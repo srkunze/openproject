@@ -35,6 +35,7 @@ class Status < ApplicationRecord
   acts_as_list
 
   belongs_to :color, class_name: 'Color'
+  belongs_to :type, class_name: 'Type'
 
   before_destroy :delete_workflows
 

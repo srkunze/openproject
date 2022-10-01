@@ -35,6 +35,7 @@ module Types
     end
 
     attribute :name
+    attribute :initial_status
     attribute :is_in_roadmap
     attribute :is_milestone
     attribute :is_default

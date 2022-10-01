@@ -60,6 +60,9 @@ class WorkPackages::SetAttributesService < ::BaseServices::SetAttributes
     update_duration
     update_derivable
     update_project_dependent_attributes
+    if work_package.new_record? and work_package.type_id_changed?
+      work_package.status = work_package.type.initial_status
+    end
     reassign_invalid_status_if_type_changed
     set_templated_description
   end
@@ -150,7 +153,6 @@ class WorkPackages::SetAttributesService < ::BaseServices::SetAttributes
   def set_default_attributes(attributes)
     set_default_priority
     set_default_author
-    set_default_status
     set_default_start_date(attributes)
     set_default_due_date(attributes)
   end
@@ -161,10 +163,6 @@ class WorkPackages::SetAttributesService < ::BaseServices::SetAttributes
 
   def set_default_author
     work_package.author ||= user
-  end
-
-  def set_default_status
-    work_package.status ||= Status.default
   end
 
   def set_default_priority
@@ -314,8 +312,7 @@ class WorkPackages::SetAttributesService < ::BaseServices::SetAttributes
   def reassign_status(available_statuses)
     return if available_statuses.include?(work_package.status) || work_package.status.is_a?(Status::InexistentStatus)
 
-    new_status = available_statuses.detect(&:is_default) || available_statuses.first
-    work_package.status = new_status if new_status.present?
+    work_package.status = work_package.type.initial_status
   end
 
   def reassign_invalid_status_if_type_changed
