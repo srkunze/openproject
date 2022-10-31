@@ -50,6 +50,9 @@ npm-debug.log*
 /tags.temp
 /tags.files
 
+# Ignore Vim files
+*.un~
+
 # Ignore RubyMine files
 /.idea
 /frontend/.idea

@@ -1,0 +1,4 @@
+- migration to copy default status to all types
+- fix reloading of create_form of work_package when changing work_package type
+- migration to remove status.is_default
+- remove status.is_default from views, controllers, models, helpers
