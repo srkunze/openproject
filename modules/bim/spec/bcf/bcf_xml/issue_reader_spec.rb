@@ -135,7 +135,7 @@ describe ::OpenProject::Bim::BcfXml::IssueReader do
         let(:bcf_issue) { subject.extract! }
 
         it 'sets a status' do
-          expect(bcf_issue.work_package.status).to eql(Status.default)
+          expect(bcf_issue.work_package.status).to eql(bcf_issue.work_package.type.initial_status)
         end
 
         it 'sets a type' do

@@ -60,7 +60,7 @@ class WorkPackages::SetAttributesService < ::BaseServices::SetAttributes
     update_duration
     update_derivable
     update_project_dependent_attributes
-    if work_package.new_record? and work_package.type_id_changed?
+    if work_package.new_record?
       work_package.status = work_package.type.initial_status
     end
     reassign_invalid_status_if_type_changed

@@ -38,8 +38,8 @@ See COPYRIGHT and LICENSE files for more details.
                     label: WorkPackage.human_attribute_name(:done_ratio) %></div>
   <% end %>
   <div class="form--field"><%= f.check_box 'is_closed' %></div>
-  <% unless @status.is_default? %>
-    <div class="form--field"><%= f.check_box 'is_default' %></div>
+  <% if @status.initial_for_any_types? %>
+    <%= @status.types_where_is_initial %>
   <% end %>
 
   <div class="form--field">

@@ -33,7 +33,6 @@ module Statuses
       [
         [:name, { caption: Status.human_attribute_name(:name) }],
         [:color, { caption: Status.human_attribute_name(:color) }],
-        [:is_default, { caption: Status.human_attribute_name(:is_default) }],
         [:is_closed, { caption: Status.human_attribute_name(:is_closed) }],
         [:is_readonly, { caption: Status.human_attribute_name(:is_readonly) }],
         [:sort, { caption: I18n.t(:label_sort) }]

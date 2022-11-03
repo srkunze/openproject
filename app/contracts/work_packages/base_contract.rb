@@ -162,7 +162,7 @@ module WorkPackages
 
       statuses = new_statuses_allowed_from(status)
 
-      statuses = statuses.or(Status.where_default) if include_default
+      statuses = statuses.or(model.type.initial_status) if include_default
 
       statuses.order_by_position
     end

@@ -56,7 +56,7 @@ module Bim::Bcf::API::V2_1
             due_date: nil,
             subject: nil,
             type: @project.types.default.first,
-            status: Status.default,
+            status: @project.types.default.first.initial_status,
             priority: IssuePriority.default
           }
         end

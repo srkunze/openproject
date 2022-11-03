@@ -12,10 +12,6 @@ module Statuses
       link_to status.name, edit_status_path(status)
     end
 
-    def is_default
-      checkmark(status.is_default?)
-    end
-
     def is_closed
       checkmark(status.is_closed?)
     end

@@ -70,7 +70,7 @@ class StatusesController < ApplicationController
 
   def destroy
     status = Status.find(params[:id])
-    if status.is_default?
+    if status.initial_for_any_types?
       flash[:error] = I18n.t(:error_unable_delete_default_status)
     else
       status.destroy

@@ -108,7 +108,7 @@ class ::Type < ApplicationRecord
     elsif include_default
       ::Type
         .statuses([id])
-        .or(Status.where_default)
+        .or(initial_status)
     else
       ::Type.statuses([id])
     end

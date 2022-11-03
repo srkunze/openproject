@@ -122,7 +122,7 @@ module Bim::Bcf
 
       def missing_status(status_name, import_options)
         if import_options[:unknown_statuses_action] == 'use_default'
-          ::Status.default
+          type(attributes).initial_status
         elsif import_options[:unknown_statuses_action] == 'chose' &&
               import_options[:unknown_statuses_chose_ids].any?
           ::Status.find_by(id: import_options[:unknown_statuses_chose_ids].first)

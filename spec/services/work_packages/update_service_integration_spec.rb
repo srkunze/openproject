@@ -1211,7 +1211,7 @@ describe WorkPackages::UpdateService, 'integration tests', type: :model, with_ma
       it 'assigns the default status' do
         expect(subject).to be_success
 
-        expect(work_package.status).to eq(Status.default)
+        expect(work_package.status).to eq(work_package.type.initial_status)
       end
     end
 
