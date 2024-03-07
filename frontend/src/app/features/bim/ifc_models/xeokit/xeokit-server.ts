@@ -33,10 +33,15 @@ export class XeokitServer {
    * @param done
    * @param error
    */
-  getProject(projectData:any, done:Function, _error:Function) {
+  getProject(projectId:string, done:Function, _error:Function) {
+    const projectDefinition = this.ifcModels.projects.find((p) => p.id === projectId);
+    if (projectDefinition === undefined) {
+      throw new Error(`unknown project id '${projectId}'`);
+    }
+
     const manifestData = {
-      id: projectData[0].id,
-      name: projectData[0].name,
+      id: projectDefinition.id,
+      name: projectDefinition.name,
       models: this.ifcModels.models,
       viewerContent: {
         modelsLoaded: this.ifcModels.shown_models,
