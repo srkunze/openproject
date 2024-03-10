@@ -77,6 +77,8 @@ import {
   addBackgroundEvents,
   removeBackgroundEvents,
 } from 'core-app/features/team-planner/team-planner/planner/background-events';
+import { ApiV3Service } from 'core-app/core/apiv3/api-v3.service';
+import { ApiV3FilterBuilder } from 'core-app/shared/helpers/api-v3/api-v3-filter-builder';
 import allLocales from '@fullcalendar/core/locales-all';
 
 @Component({
@@ -129,6 +131,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
     readonly halNotification:HalResourceNotificationService,
     readonly weekdayService:WeekdayService,
     readonly dayService:DayResourceService,
+    readonly apiV3Service:ApiV3Service,
   ) {
     super();
   }
@@ -175,6 +178,38 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
     }
   }
 
+  public calendarMeetingsFunction(
+    fetchInfo:{ start:Date, end:Date, timeZone:string },
+    successCallback:(events:EventInput[]) => void,
+  ):void {
+    const startDate = moment(fetchInfo.start).format('YYYY-MM-DD');
+    const endDate = moment(fetchInfo.end).format('YYYY-MM-DD');
+
+    const filters = new ApiV3FilterBuilder();
+    filters.add('datesInterval', '<>d', [startDate, endDate]);
+
+    this
+      .apiV3Service
+      .meetings
+      .filtered(filters, { pageSize: '-1' })
+      .get()
+      .subscribe((meetings) => {
+        const events = meetings.elements.map((meeting) => {
+          return {
+            title: meeting.title,
+            start: Date.parse(meeting.startTime),
+            end: Date.parse(meeting.endTime),
+            editable: false,
+            durationEditable: false,
+            allDay: false,
+            meeting,
+          };
+        });
+
+        successCallback(events);
+      });
+  }
+
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnDestroy():void {
     super.ngOnDestroy();
@@ -191,6 +226,10 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
         {
           id: 'work_packages',
           events: this.calendarEventsFunction.bind(this) as unknown,
+        },
+        {
+          id: 'meetings',
+          events: this.calendarMeetingsFunction.bind(this) as unknown,
         },
         {
           events: [],
@@ -211,9 +250,12 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       select: this.handleDateClicked.bind(this) as unknown,
       eventResizableFromStart: true,
       editable: true,
+      displayEventTime: true,
+      displayEventEnd: true,
+      timeFormat: 'H(:mm)',
       eventDidMount: (evt:CalendarViewEvent) => {
         const { el, event } = evt;
-        if (event.source?.id === 'background') {
+        if (event.source?.id !== 'work_packages') {
           return;
         }
         const workPackage = event.extendedProps.workPackage as WorkPackageResource;
@@ -292,7 +334,7 @@ export class WorkPackagesCalendarComponent extends UntilDestroyedMixin implement
       return false;
     }
     return {
-      right: 'dayGridMonth,dayGridWeek',
+      right: 'dayGridMonth,dayGridWeek,dayGridDay',
       center: 'title',
       left: 'prev,next today',
     };
