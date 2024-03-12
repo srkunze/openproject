@@ -31,9 +31,9 @@ export class XeokitServer {
    * Gets a manifest for a project.
    * @param projectId
    * @param done
-   * @param error
+   * @param _error
    */
-  getProject(projectId:string, done:Function, _error:Function) {
+  getProject(projectId:string, done:(json:unknown) => void, _error:() => void) {
     const projectDefinition = this.ifcModels.projects.find((p) => p.id === projectId);
     if (projectDefinition === undefined) {
       throw new Error(`unknown project id '${projectId}'`);
