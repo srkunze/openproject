@@ -59,8 +59,7 @@ module Bim::Bcf
 
       COMPONENTS_PROPERTIES = %w(visibility
                                  selection
-                                 coloring
-                                 translucency).freeze
+                                 coloring).freeze
 
       COMPONENT_PROPERTIES = %w(ifc_guid
                                 originating_system
@@ -75,10 +74,7 @@ module Bim::Bcf
 
       VIEW_SETUP_HINTS_PROPERTIES = %w(spaces_visible
                                        space_boundaries_visible
-                                       openings_visible
-                                       spaces_translucent
-                                       space_boundaries_translucent
-                                       openings_translucent).freeze
+                                       openings_visible).freeze
 
       COLOR_REGEXP = /([0-9a-f]{2})?[0-9a-f]{6}/
 
@@ -191,7 +187,6 @@ module Bim::Bcf
         (json.keys - COMPONENTS_PROPERTIES).any? ||
           invalid_visibility?(json["visibility"]) ||
           invalid_components?(json["selection"]) ||
-          invalid_components?(json["translucency"]) ||
           invalid_colorings?(json["coloring"])
       end
 
